@@ -5,6 +5,7 @@ import Search from "./Search";
 
 function PlantPage() {
   const [plants, setPlants] = useState([])
+  const [filterBy, setfilterBy]= useState('')
   useEffect(() => {
     fetch("http://localhost:6001/plants")
     .then((response) => response.json())
@@ -20,14 +21,16 @@ function PlantPage() {
     })
     .then((response) => response.json())
     .then((data)=>setPlants([...plants,data]))
-      
   }
+
+  console.log(filterBy)
+  const listToDisplay = plants.filter(plant=> plant.name.includes(filterBy))
 
   return (
     <main>
       <NewPlantForm onAddPlant={onAddPlant} />
-      <Search />
-      <PlantList plants={plants}/>
+      <Search  onFilter={setfilterBy} />
+      <PlantList plants={listToDisplay}/>
     </main>
   );
 }
